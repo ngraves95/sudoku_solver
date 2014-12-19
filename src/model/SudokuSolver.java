@@ -27,7 +27,7 @@ public class SudokuSolver {
         original = gb;
     }
 
-    public void solve() {
+    public GameBoard solve() {
         solution = original.clone();
 
         if (!solution.checkBoardValidity()) {
@@ -35,6 +35,8 @@ public class SudokuSolver {
         }
 
         solveHelper(solution);
+
+        return solution;
     }
 
     /**
@@ -53,20 +55,19 @@ public class SudokuSolver {
         Collection<Integer> validDigits;
         Move potential;
 
-
         for (Point next : gb) {
 
             validDigits = gb.validMoves(next);
+            potential = new Move(gb, next);
 
             if (validDigits.isEmpty()) {
                 return false;
             }
 
-            potential = new Move(gb, next);
-
             for (Integer i : validDigits) {
 
                 if (!digitsTried.contains(i)) {
+
                     potential.place(i);
 
                     if (solveHelper(gb)) {
@@ -75,14 +76,11 @@ public class SudokuSolver {
                     }
 
                     digitsTried.add(i);
-
                     potential.clear();
                 }
-
             }
 
             return false;
-
         }
 
         return false;
@@ -92,12 +90,14 @@ public class SudokuSolver {
         return solution;
     }
 
+    public GameBoard getOriginial() {
+        return original;
+    }
+
     public static void main(String[] args) {
         try {
             GameBoard gb = new GameBoard(new Scanner(new File("sample.txt")));
             SudokuSolver solver  = new SudokuSolver(gb);
-
-
             solver.solve();
             System.out.println("Original:");
             System.out.println(gb);

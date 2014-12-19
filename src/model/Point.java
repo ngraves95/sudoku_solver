@@ -19,4 +19,23 @@ public class Point {
         return "(" + x + ", " + y + ")";
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == null || !(o instanceof Point)) {
+            return false;
+        } else if (o == this) {
+            return true;
+        }
+
+        Point p = (Point) o;
+
+        return x == p.x && y == p.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return (x * 31) + y;
+    }
+
 }
