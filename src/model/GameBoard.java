@@ -321,13 +321,14 @@ public class GameBoard implements Iterable<Point> {
         private Point _next;
 
         public Innerator() {
+            _next = new Point(0, 0);
             _next = findNext();
         }
 
         private Point findNext() {
 
-            int x = 0;
-            int y = 0;
+            int x = _next.x;
+            int y = _next.y;
 
             // iterate from upper-left to find the starting position
             while (backing[y][x] != 0) {

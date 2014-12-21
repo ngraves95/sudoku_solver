@@ -51,36 +51,29 @@ public class SudokuSolver {
             return true;
         }
 
+        Point next = gb.iterator().next();
+        Collection<Integer> validDigits = gb.validMoves(next);
         Collection<Integer> digitsTried = new HashSet<>();
-        Collection<Integer> validDigits;
-        Move potential;
+        Move potential = new Move(gb, next);
 
-        for (Point next : gb) {
-
-            validDigits = gb.validMoves(next);
-            potential = new Move(gb, next);
-
-            if (validDigits.isEmpty()) {
-                return false;
-            }
-
-            for (Integer i : validDigits) {
-
-                if (!digitsTried.contains(i)) {
-
-                    potential.place(i);
-
-                    if (solveHelper(gb)) {
-                        solution = gb;
-                        return true;
-                    }
-
-                    digitsTried.add(i);
-                    potential.clear();
-                }
-            }
-
+        if (validDigits.isEmpty()) {
             return false;
+        }
+
+        for (Integer i : validDigits) {
+
+            if (!digitsTried.contains(i)) {
+
+                potential.place(i);
+
+                if (solveHelper(gb)) {
+                    solution = gb;
+                    return true;
+                }
+
+                digitsTried.add(i);
+                potential.clear();
+            }
         }
 
         return false;
